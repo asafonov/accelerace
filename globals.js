@@ -10,6 +10,7 @@ window.asafonov.events = {
   CAR_MOVE_LEFT: 'CAR_MOVE_LEFT'
 }
 window.asafonov.settings = {
+  useGyro = false
 }
 window.asafonov.player = null
 window.onerror = (msg, url, line) => {
