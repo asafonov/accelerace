@@ -8,13 +8,16 @@ class GameView {
     this.carView = new CarView(asafonov.timer.getFPS() / 2)
     this.playButton = document.querySelector('.game_play')
     this.pauseButton = document.querySelector('.game_pause')
+    this.gyroButton = document.querySelector('.game_gyroscope')
     this.playButton.style.display = 'none'
     this.pauseButton.style.display = 'none'
     this.onPlayClickProxy = this.onPlayClick.bind(this)
     this.onPauseClickProxy = this.onPauseClick.bind(this)
+    this.onGyroClickProxy = this.onGyroClick.bind(this)
     this.onTouchProxy = this.onTouch.bind(this)
     this.addEventListeners()
     setTimeout(() => this.initEnemy(), delay)
+    this.initGyroButton()
     setTimeout(() => {
       document.querySelector('.countdown').style.display = 'none'
       this.pauseButton.style.display = 'flex'
@@ -23,6 +26,10 @@ class GameView {
 
   initEnemy() {
     this.enemyListView = new EnemyListView(this.speed)
+  }
+
+  initGyroButton() {
+    this.gyroButton.style.opacity = asafonov.settings.useGyro ? 1 : 0.4
   }
 
   onPlayClick (event) {
@@ -39,6 +46,11 @@ class GameView {
     asafonov.timer.pause()
   }
 
+  onGyroClick (event) {
+    asafonov.settings.useGyro = ! asafonov.settings.useGyro
+    this.initGyroButton()
+  }
+
   onTouch(event) {
     if (event.clientX > window.innerWidth / 2) {
       asafonov.messageBus.send(asafonov.events.CAR_MOVE_RIGHT)
@@ -50,6 +62,7 @@ class GameView {
   addEventListeners() {
     this.playButton.addEventListener('click', this.onPlayClickProxy)
     this.pauseButton.addEventListener('click', this.onPauseClickProxy)
+    this.gyroButton.addEventListener('click', this.onGyroClickProxy)
     document.body.addEventListener('click', this.onTouchProxy)
     asafonov.messageBus.subscribe(asafonov.events.ENEMY_DESTROYED, this, 'onEnemyDestroyed')
     asafonov.messageBus.subscribe(asafonov.events.GAME_OVER, this, 'onGameOver')
@@ -58,6 +71,7 @@ class GameView {
   removeEventListeners() {
     this.playButton.removeEventListener('click', this.onPlayClickProxy)
     this.pauseButton.removeEventListener('click', this.onPauseClickProxy)
+    this.gyroButton.removeEventListener('click', this.onGyroClickProxy)
     document.body.removeEventListener('click', this.onTouchProxy)
     asafonov.messageBus.unsubscribe(asafonov.events.ENEMY_DESTROYED, this, 'onEnemyDestroyed')
     asafonov.messageBus.unsubscribe(asafonov.events.GAME_OVER, this, 'onGameOver')
