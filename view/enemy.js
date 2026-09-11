@@ -15,6 +15,8 @@ class EnemyView {
       top: -rect.height
     }
     this.display()
+    const isHorizontalMove = Math.random() > 0.5
+    this.horizontalMove = isHorizontalMove ? (Math.random() > 0.5 ? -1 : 1) * this.roadRect.width / 12 : 0
     this.moveVertical()
   }
 
@@ -35,13 +37,25 @@ class EnemyView {
       }
     }
 
+    if (movedHorizontally) {
+      this.carRect.left += left
+
+      if (this.carRect.left >= this.roadRect.right - this.carRect.width) {
+        this.carRect.left = this.roadRect.right - this.carRect.width
+      }
+
+      if (this.carRect.left <= this.roadRect.left) {
+        this.carRect.left = this.roadRect.left
+      }
+    }
+
     this.display()
-    return movedHorizontally || movedVertically
+    return movedVertically
   }
 
   moveVertical() {
     const top = this.carRect.top
-    const moved = this.move(this.speed, Math.random() > 0.6 ? this.speed : 0)
+    const moved = this.move(this.speed, top > window.innerHeight / 3 ? this.horizontalMove : 0)
     const isGameOver = this.isGameOver()
 
     if (isGameOver) {
