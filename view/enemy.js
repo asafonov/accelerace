@@ -41,7 +41,7 @@ class EnemyView {
 
   moveVertical() {
     const top = this.carRect.top
-    const moved = this.move(this.speed, 0)
+    const moved = this.move(this.speed, Math.random() > 0.6 ? this.speed : 0)
     const isGameOver = this.isGameOver()
 
     if (isGameOver) {
