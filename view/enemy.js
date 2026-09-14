@@ -1,6 +1,6 @@
 class EnemyView {
 
-  constructor (speed, id) {
+  constructor (speed, id, isDrunk = 0) {
     this.speed = speed || 1
     this.id = id
     this.element = document.querySelector(`#car_${id}`)
@@ -15,7 +15,7 @@ class EnemyView {
       top: -rect.height
     }
     this.display()
-    const isHorizontalMove = Math.random() > 0.5
+    const isHorizontalMove = Math.random() > 1 - isDrunk
     this.horizontalMove = isHorizontalMove ? (Math.random() > 0.5 ? -1 : 1) * this.roadRect.width / 12 : 0
     this.moveVertical()
   }

@@ -1,6 +1,7 @@
 class EnemyListView {
 
   constructor (speed) {
+    this.total = 0
     this.enemiesOnScreen = []
     this.speed = speed
     this.doubleEnemy = false
@@ -19,8 +20,9 @@ class EnemyListView {
   createEnemy() {
     if (this.enemiesOnScreen.length === 2) return
 
+    this.total++
     const id = this.enemiesOnScreen.length === 0 ? Math.round(Math.random()) + 1 : 3 - this.enemiesOnScreen[0].id
-    const view = new EnemyView(this.speed, id)
+    const view = new EnemyView(this.speed, id, Math.min(this.total / 50, 0.6))
     this.enemiesOnScreen.push(view)
   }
 
